@@ -1,22 +1,19 @@
-# Frontend Dockerfile - Fixed
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package files first
+# Copy package files
 COPY package.json package-lock.json* ./
 
-# Install ALL dependencies (including dev dependencies)
-RUN npm ci --include=dev
+# Install dependencies
+RUN npm ci
 
 # Copy source code
 COPY . .
 
-# Create .next directory for caching
-RUN mkdir -p .next
+# Build the application
+RUN npm run build
 
-# Expose port
 EXPOSE 3000
 
-# Start development server
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
