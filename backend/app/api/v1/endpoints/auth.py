@@ -21,6 +21,9 @@ async def register(
     """
     Register new user
     """
+    # Debug: Check if db is AsyncSession
+    print(f"DB type in register: {type(db)}")
+    
     auth_service = AuthService(db)
     
     try:
@@ -31,7 +34,14 @@ async def register(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
-
+    except Exception as e:
+        # Add more detailed error for debugging
+        print(f"Unexpected error in register: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal server error: {str(e)}"
+        )
+    
 @router.post("/login", response_model=Token)
 async def login(
     login_data: LoginRequest,

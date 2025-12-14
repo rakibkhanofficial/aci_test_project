@@ -12,11 +12,11 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     
-    # Database
-    DATABASE_URL: str = "postgresql+asyncpg://chimera:chimera_secure_pass@postgres:5432/chimera_db"
+    # Database - Use sync URL (postgresql:// not postgresql+asyncpg://)
+    DATABASE_URL: str = "postgresql://chimera:chimera_secure_pass@postgres:5432/chimera_db"
     
     # Redis
-    REDIS_URL: str = "redis://redis:6379/0"  # Add this line
+    REDIS_URL: str = "redis://redis:6379/0"
     
     # Gemini AI
     GEMINI_API_KEY: str

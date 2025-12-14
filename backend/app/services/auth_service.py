@@ -14,7 +14,7 @@ class AuthService:
     
     async def authenticate_user(self, username: str, password: str) -> Optional[User]:
         """Authenticate user with username and password"""
-        result = await self.db.execute(
+        result = self.db.execute(  # REMOVE 'await' here
             select(User).where(User.username == username)
         )
         user = result.scalar_one_or_none()
@@ -31,7 +31,7 @@ class AuthService:
     async def create_user(self, user_data: UserCreate) -> User:
         """Create new user"""
         # Check if user exists
-        result = await self.db.execute(
+        result = self.db.execute(  # REMOVE 'await' here
             select(User).where(
                 (User.username == user_data.username) | (User.email == user_data.email)
             )
@@ -95,7 +95,7 @@ class AuthService:
             if username is None:
                 return None
             
-            result = await self.db.execute(
+            result = self.db.execute(  # REMOVE 'await' here
                 select(User).where(User.username == username)
             )
             user = result.scalar_one_or_none()
@@ -110,14 +110,14 @@ class AuthService:
     
     async def get_user_by_id(self, user_id: int) -> Optional[User]:
         """Get user by ID"""
-        result = await self.db.execute(
+        result = self.db.execute(  # REMOVE 'await' here
             select(User).where(User.id == user_id)
         )
         return result.scalar_one_or_none()
     
     async def update_user(self, user_id: int, user_data: UserUpdate) -> Optional[User]:
         """Update user information"""
-        result = await self.db.execute(
+        result = self.db.execute(  # REMOVE 'await' here
             select(User).where(User.id == user_id)
         )
         user = result.scalar_one_or_none()
