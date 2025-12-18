@@ -1,37 +1,52 @@
-from pydantic_settings import BaseSettings
-from typing import List, Optional
+# app/core/config.py
 import os
+from pathlib import Path
+from typing import List
+from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Get the project root directory
+BASE_DIR = Path(__file__).resolve().parent.parent.parent  # Adjust if needed
 
 class Settings(BaseSettings):
-    # API
-    API_V1_STR: str = "/api/v1"
-    PROJECT_NAME: str = "Project Chimera"
+    # Application
+    APP_NAME: str = "Retail Vision AI"
+    APP_VERSION: str = "1.0.0"
+    DEBUG: bool = False
     
-    # Security
+    # Database
+    DATABASE_URL: str
+    
+    # JWT
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     
-    # Database - Use sync URL (postgresql:// not postgresql+asyncpg://)
-    DATABASE_URL: str = "postgresql://chimera:chimera_secure_pass@postgres:5432/chimera_db"
+    # YOLO
+    YOLO_MODEL: str = "yolov8n.pt"
+    CONFIDENCE_THRESHOLD: float = 0.25
+    IOU_THRESHOLD: float = 0.45
     
-    # Redis
-    REDIS_URL: str = "redis://redis:6379/0"
+    # Gemini
+    GEMINI_API_KEY: str = ""
     
-    # Gemini AI
-    GEMINI_API_KEY: str
-    GEMINI_MODEL: str = "gemini-pro-vision"
-    
-    # File uploads
-    MAX_UPLOAD_SIZE: int = 10 * 1024 * 1024  # 10MB
-    ALLOWED_IMAGE_TYPES: List[str] = ["image/jpeg", "image/png", "image/gif"]
-    UPLOAD_DIR: str = "uploads"
-    
-    # CORS
-    CORS_ORIGINS: List[str] = ["http://localhost:3000"]
-    
+    # File Upload - CHANGE THIS TO PROJECT PATH
+    UPLOAD_DIR: str = str(BASE_DIR / "uploads")  # Now: /home/rakib-khan/Downloads/retail-vision-ai/backend/uploads
+    MAX_FILE_SIZE: int = 10 * 1024 * 1024  # 10MB
+    ALLOWED_EXTENSIONS: List[str] = [".jpg", ".jpeg", ".png", ".webp"]
+
+    # Torch
+    TORCH_WEIGHTS_ONLY: bool = False
+
     class Config:
         env_file = ".env"
-        case_sensitive = True
+        extra = "ignore"
 
+# Create a settings instance
 settings = Settings()
+
+# Print for debugging
+print(f"📁 Project BASE_DIR: {BASE_DIR}")
+print(f"📁 UPLOAD_DIR will be: {settings.UPLOAD_DIR}")

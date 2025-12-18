@@ -37,7 +37,7 @@ const registerSchema = z.object({
   email: z.string()
     .email('Invalid email address')
     .min(5, 'Email is required'),
-  fullName: z.string()
+  full_name: z.string()
     .min(2, 'Full name must be at least 2 characters')
     .max(100, 'Full name must be less than 100 characters'),
   password: z.string()
@@ -65,7 +65,7 @@ export function RegisterForm() {
     defaultValues: {
       username: '',
       email: '',
-      fullName: '',
+      full_name: '',
       password: '',
       confirmPassword: '',
     },
@@ -201,7 +201,7 @@ export function RegisterForm() {
             />
             <FormField
               control={form.control}
-              name="fullName"
+              name="full_name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-gray-300">Full Name</FormLabel>
